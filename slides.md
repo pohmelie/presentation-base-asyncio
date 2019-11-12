@@ -681,6 +681,13 @@ cleanup не может выполняться вне лупа
 ---
 
 # Asyncio and non-asyncio-aware code
+
+# Presenter Notes
+проблема стыковки asyncio и кода который ничего не знает об asyncio
+
+---
+
+# Asyncio and non-asyncio-aware code
 #
     !python
     async def a():
@@ -775,18 +782,23 @@ thread pool executor, process pool executor
 
 # Asyncio and non-asyncio-aware code
 # Что полезно исполнять в executor:
-* file io
-* network io
-* long™ running syscals
+* GIL-aware code
+
+# Presenter Notes
+захваченый GIL не даст лупу работать
+
+---
+
+# Asyncio and non-asyncio-aware code
+# Что полезно исполнять в executor:
+* GIL-aware code
 # Что бесполезно исполнять в thread executor?
 
 ---
 
 # Asyncio and non-asyncio-aware code
 # Что полезно исполнять в executor:
-* file io
-* network io
-* long™ running syscals
+* GIL-aware code
 # Что бесполезно исполнять в thread executor:
 * cpu bound tasks (serialization, computation)
 
@@ -794,9 +806,7 @@ thread pool executor, process pool executor
 
 # Asyncio and non-asyncio-aware code
 # Что полезно исполнять в executor:
-* file io
-* network io
-* long™ running syscals
+* GIL-aware code
 # Что бесполезно исполнять в thread executor:
 * cpu bound tasks (serialization, computation)
 * non-GIL-aware code
@@ -805,9 +815,7 @@ thread pool executor, process pool executor
 
 # Asyncio and non-asyncio-aware code
 # Что полезно исполнять в executor:
-* file io
-* network io
-* long™ running syscals
+* GIL-aware code
 # Что бесполезно исполнять в thread executor:
 * cpu bound tasks (serialization, computation)
 * non-GIL-aware code
@@ -817,9 +825,7 @@ thread pool executor, process pool executor
 
 # Asyncio and non-asyncio-aware code
 # Что полезно исполнять в executor:
-* file io
-* network io
-* long™ running syscals
+* GIL-aware code
 # Что бесполезно исполнять в thread executor:
 * cpu bound tasks (serialization, computation)
 * non-GIL-aware code
@@ -830,9 +836,7 @@ thread pool executor, process pool executor
 
 # Asyncio and non-asyncio-aware code
 # Что полезно исполнять в executor:
-* file io
-* network io
-* long™ running syscals
+* GIL-aware code
 # Что бесполезно исполнять в thread executor:
 * cpu bound tasks (serialization, computation)
 * non-GIL-aware code
@@ -862,7 +866,9 @@ https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-consider
 ![goto](images/goto.png)
 
 # Presenter Notes
-неструктуированная конкурентность
+неструктуированная конкурентность (fire and forget)
+
+история с goto
 
 но другого механизма в asyncio пока нет!
 
@@ -883,7 +889,9 @@ https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-consider
 ![sturctured-concurrency](images/structured-concurrency.png)
 
 # Presenter Notes
-неструктуированная конкурентность
+неструктуированная конкурентность (fire and forget)
+
+история с goto
 
 но другого механизма в asyncio пока нет!
 
@@ -953,22 +961,22 @@ asyncio хочет решить эту проблему
 
 # Async is easy!
 
-* context managers
+* structured concurrency
 
 ---
 
 # Async is easy!
 
-* context managers
-* use executors
+* structured concurrency
+* executors
 
 ---
 
 # Async is easy!
 
-* context managers
-* use executors
-* do not spawn without finalization
+* structured concurrency
+* executors
+* strict switch points
 
 ---
 
